@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./main.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory, Redirect } from "react-router-dom";
 import $ from "jquery";
 const { v4: uuidv4 } = require("uuid");
 // let background_color: rgba(255,192,203, .6);
@@ -41,37 +41,29 @@ function Footer() {
     {
       id: uuidv4(),
       name: "contact",
-      items: ["random", "text", "to fill", "space"],
+      items: [],
       modal: false
     }
   ]);
 
   function MouseOver(event) {
-
     // $("#full-vh").css("background-color", "LightSlateGray")
-    $("#full-vh").addClass( "bg" );
-;
+    $("#full-vh").addClass("bg");
   }
 
   function MouseOut(event) {
     // $("#full-vh").css("background-color", "transparent");
     // $("#full-vh").css('opacity' ,'1');
-
     // const updatedList = data.map(item =>
     //   item.modal === true ? { ...item, modal: true } : item
     // );
     // setdata(updatedList);
-
-    // $("#full-vh").removeClass( "bg" );
-
+    $("#full-vh").removeClass("bg");
   }
-
-
 
   function BgColor(event) {
     $("#full-vh").css("background-color", "green");
     // $("#full-vh").css("background-color", "LightSlateGray");
-
   }
 
   const handleToggle = id => {
@@ -84,6 +76,11 @@ function Footer() {
     setdata(updatedList);
   };
 
+  const redirect = () => {
+    // useHistory.push('/google.com')
+    window.location.href = "https://google.com/contact";
+  };
+
   return (
     <div>
       <div id="wrapper">
@@ -93,16 +90,24 @@ function Footer() {
             key={d.id}
             onClick={() => {
               handleToggle(d.id);
-
             }}
           >
             <span
               className={"text " + (d.modal ? "show" : "")}
               onMouseOver={MouseOver}
               onMouseOut={MouseOut}
-
             >
-              {d.name}
+              {d.name === "contact" ? (
+                <a
+                  href={"mailto:pragypandeywork@gmail.com"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {d.name}
+                </a>
+              ) : (
+                <>{d.name}</>
+              )}
             </span>
           </div>
         ))}
@@ -121,7 +126,7 @@ function Footer() {
                     activeClassName="active-link"
                     key={idx}
                   >
-                    <span>{item} </span>
+                    <span> {item ? <>{item}</> : null} </span>
                   </NavLink>
                 );
               })}
